@@ -1,0 +1,82 @@
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h2 class="card-title text-center mb-4">Login</h2>
+          
+          <form id="loginForm">
+            <div class="mb-3">
+              <label for="username" class="form-label">Username <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="username" value="testuser" required>
+              <div class="invalid-feedback">Please enter your username</div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
+              <input type="password" class="form-control" id="password" value="password123" required>
+              <div class="invalid-feedback">Please enter your password</div>
+            </div>
+            
+            <div class="alert alert-danger d-none" id="errorMessage">
+              Invalid username or password
+            </div>
+            
+            <div class="alert alert-success d-none" id="successLoginMessage">
+              Login successful! Redirecting...
+            </div>
+            
+            <button type="submit" class="btn btn-primary w-100">Login</button>
+          </form>
+          
+          <div class="text-center mt-3">
+            <p class="text-muted small">Test credentials: testuser / password123</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+  const errorMsg = document.getElementById('errorMessage');
+  const successMsg = document.getElementById('successLoginMessage');
+  
+  if (username === 'testuser' && password === 'password123') {
+    errorMsg.classList.add('d-none');
+    successMsg.classList.remove('d-none');
+    
+    localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('username', username);
+    localStorage.setItem('userDetails', JSON.stringify({
+      name: 'John Doe',
+      email: 'john@example.com',
+      address: '123 Main St, Sligo, Ireland',
+      phone: '+353 71 123 4567'
+    }));
+    
+    setTimeout(() => {
+      window.location.href = '/';
+    }, 1500);
+  } else {
+    errorMsg.classList.remove('d-none');
+    successMsg.classList.add('d-none');
+  }
+});
+
+if (localStorage.getItem('isLoggedIn') === 'true') {
+  document.getElementById('loginLink').textContent = 'Logout';
+  document.getElementById('loginLink').addEventListener('click', function(e) {
+    e.preventDefault();
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('username');
+    localStorage.removeItem('userDetails');
+    window.location.href = '/';
+  });
+}
+</script>

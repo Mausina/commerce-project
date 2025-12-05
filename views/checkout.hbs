@@ -1,0 +1,172 @@
+<div class="container my-5">
+  <h1 class="mb-4">Checkout</h1>
+  
+  <div class="row">
+    <div class="col-lg-8 mb-4">
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title">Order Summary</h5>
+          <div id="checkoutItems"></div>
+          <hr>
+          <div class="d-flex justify-content-between">
+            <strong>Total:</strong>
+            <strong id="checkoutTotal">€0.00</strong>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title">Delivery Information</h5>
+          <form id="deliveryForm">
+            <div class="mb-3">
+              <label for="fullName" class="form-label">Full Name <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="fullName" required>
+              <div class="invalid-feedback">Please enter your full name</div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="deliveryEmail" class="form-label">Email <span class="text-danger">*</span></label>
+              <input type="email" class="form-control" id="deliveryEmail" required>
+              <div class="invalid-feedback">Please enter a valid email</div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="deliveryPhone" class="form-label">Phone <span class="text-danger">*</span></label>
+              <input type="tel" class="form-control" id="deliveryPhone" required>
+              <div class="invalid-feedback">Please enter your phone number</div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="deliveryAddress" class="form-label">Address <span class="text-danger">*</span></label>
+              <textarea class="form-control" id="deliveryAddress" rows="3" required></textarea>
+              <div class="invalid-feedback">Please enter your address</div>
+            </div>
+          </form>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Payment Information</h5>
+          <form id="paymentForm">
+            <div class="mb-3">
+              <label for="cardNumber" class="form-label">Card Number <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required>
+              <div class="invalid-feedback">Please enter a valid card number</div>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="cardExpiry" class="form-label">Expiry Date <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="cardExpiry" placeholder="MM/YY" maxlength="5" required>
+                <div class="invalid-feedback">Please enter expiry date</div>
+              </div>
+              
+              <div class="col-md-6 mb-3">
+                <label for="cardCvv" class="form-label">CVV <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="cardCvv" placeholder="123" maxlength="3" required>
+                <div class="invalid-feedback">Please enter CVV</div>
+              </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary w-100" id="submitPayment">Complete Purchase</button>
+            
+            <div class="alert alert-success mt-3 d-none" id="orderSuccess">
+              <strong>Thank you for your order!</strong> Your payment has been processed successfully.
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-lg-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Need Help?</h5>
+          <p>If you have any questions about your order, please contact us:</p>
+          <p><strong>Email:</strong> info@techstore.ie</p>
+          <p><strong>Phone:</strong> +353 71 123 4567</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function loadCheckout() {
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
+  const itemsDiv = document.getElementById('checkoutItems');
+  const totalDiv = document.getElementById('checkoutTotal');
+  
+  if (cart.length === 0) {
+    itemsDiv.innerHTML = '<p>Your cart is empty</p>';
+    document.getElementById('submitPayment').disabled = true;
+    return;
+  }
+  
+  let html = '<div class="list-group">';
+  let total = 0;
+  
+  cart.forEach(item => {
+    const itemTotal = item.price * item.quantity;
+    total += itemTotal;
+    html += `
+      <div class="list-group-item">
+        <div class="d-flex justify-content-between">
+          <span>${item.name} x ${item.quantity}</span>
+          <span>€${itemTotal.toFixed(2)}</span>
+        </div>
+      </div>
+    `;
+  });
+  
+  html += '</div>';
+  itemsDiv.innerHTML = html;
+  totalDiv.textContent = '€' + total.toFixed(2);
+}
+
+const userDetails = JSON.parse(localStorage.getItem('userDetails'));
+if (userDetails) {
+  document.getElementById('fullName').value = userDetails.name || '';
+  document.getElementById('deliveryEmail').value = userDetails.email || '';
+  document.getElementById('deliveryPhone').value = userDetails.phone || '';
+  document.getElementById('deliveryAddress').value = userDetails.address || '';
+}
+
+document.getElementById('cardNumber').addEventListener('input', function(e) {
+  let value = e.target.value.replace(/\s/g, '');
+  let formatted = value.match(/.{1,4}/g)?.join(' ') || value;
+  e.target.value = formatted;
+});
+
+document.getElementById('cardExpiry').addEventListener('input', function(e) {
+  let value = e.target.value.replace(/\D/g, '');
+  if (value.length >= 2) {
+    value = value.slice(0, 2) + '/' + value.slice(2, 4);
+  }
+  e.target.value = value;
+});
+
+document.getElementById('paymentForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  
+  const deliveryForm = document.getElementById('deliveryForm');
+  const paymentForm = document.getElementById('paymentForm');
+  
+  if (deliveryForm.checkValidity() && paymentForm.checkValidity()) {
+    document.getElementById('orderSuccess').classList.remove('d-none');
+    document.getElementById('submitPayment').disabled = true;
+    
+    setTimeout(() => {
+      localStorage.removeItem('cart');
+      window.location.href = '/';
+    }, 3000);
+  } else {
+    deliveryForm.classList.add('was-validated');
+    paymentForm.classList.add('was-validated');
+  }
+});
+
+loadCheckout();
+</script>

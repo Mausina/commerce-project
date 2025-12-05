@@ -1,0 +1,66 @@
+[
+  {
+    "id": 1,
+    "name": "NVIDIA RTX 4080",
+    "price": 1199.99,
+    "image": "rtx4080.jpg",
+    "description": "High-performance graphics card for gaming and content creation",
+    "category": "Graphics Cards"
+  },
+  {
+    "id": 2,
+    "name": "AMD Ryzen 9 7950X",
+    "price": 699.99,
+    "image": "ryzen9.jpg",
+    "description": "16-core processor with exceptional multi-threaded performance",
+    "category": "Processors"
+  },
+  {
+    "id": 3,
+    "name": "Corsair Vengeance 32GB DDR5",
+    "price": 179.99,
+    "image": "ram.jpg",
+    "description": "High-speed DDR5 memory for demanding applications",
+    "category": "Memory"
+  },
+  {
+    "id": 4,
+    "name": "Samsung 990 PRO 2TB",
+    "price": 249.99,
+    "image": "ssd.jpg",
+    "description": "Ultra-fast NVMe SSD with PCIe 4.0 support",
+    "category": "Storage"
+  },
+  {
+    "id": 5,
+    "name": "ASUS ROG Strix B650-E",
+    "price": 349.99,
+    "image": "motherboard.jpg",
+    "description": "Premium AM5 motherboard with advanced features",
+    "category": "Motherboards"
+  },
+  {
+    "id": 6,
+    "name": "Corsair RM850x",
+    "price": 139.99,
+    "image": "psu.jpg",
+    "description": "850W modular power supply with 80+ Gold certification",
+    "category": "Power Supplies"
+  },
+  {
+    "id": 7,
+    "name": "NZXT H7 Flow",
+    "price": 129.99,
+    "image": "case.jpg",
+    "description": "Mid-tower case with excellent airflow and cable management",
+    "category": "Cases"
+  },
+  {
+    "id": 8,
+    "name": "Noctua NH-D15",
+    "price": 99.99,
+    "image": "cooler.jpg",
+    "description": "Premium air cooler with dual tower design",
+    "category": "Cooling"
+  }
+]
