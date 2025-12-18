@@ -32,10 +32,8 @@
         {{#each products}}
         <div class="col-12 col-md-6 col-lg-4 mb-4">
           <div class="card h-100">
-            <div class="card-img-placeholder bg-secondary text-white d-flex align-items-center justify-content-center"
-              style="height: 200px;">
-              <span class="small">{{this.name}}</span>
-            </div>
+            <img src="/images/{{this.image}}" class="card-img-top" alt="{{this.name}}"
+              style="height: 200px; object-fit: cover;">
             <div class="card-body d-flex flex-column">
               <h5 class="card-title">{{this.name}}</h5>
               <p class="card-text small">{{this.description}}</p>
